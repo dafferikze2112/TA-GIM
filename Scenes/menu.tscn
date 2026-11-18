@@ -1,0 +1,342 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_menu"]
+[ext_resource type="PackedScene" path="res://Scenes/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://Scenes/Objects/torch.tscn" id="3_torch"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(22, 0.3, 18)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.08, 0.07, 0.1, 1)
+roughness = 0.95
+
+[sub_resource type="BoxShape3D" id="BoxShape_floor"]
+size = Vector3(22, 0.3, 18)
+
+[sub_resource type="Environment" id="Environment_dungeon"]
+background_mode = 1
+background_color = Color(0.012, 0.016, 0.03, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.21, 0.19, 0.3, 1)
+ambient_light_energy = 0.7
+fog_enabled = true
+fog_light_color = Color(0.12, 0.1, 0.18, 1)
+fog_density = 0.025
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.025, 0.032, 0.065, 0.86)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.39, 0.2, 0.7)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button"]
+bg_color = Color(0.09, 0.1, 0.17, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.33, 0.48, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+content_margin_left = 16.0
+content_margin_right = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_hover"]
+bg_color = Color(0.31, 0.18, 0.16, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.69, 0.3, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+content_margin_left = 16.0
+content_margin_right = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_pressed"]
+bg_color = Color(0.47, 0.27, 0.14, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.82, 0.42, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="DungeonMenu" type="Node3D"]
+script = ExtResource("1_menu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dungeon")
+
+[node name="DungeonFloor" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.15, 0)
+mesh = SubResource("BoxMesh_floor")
+material_override = SubResource("Material_floor")
+
+[node name="FloorBody" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FloorBody"]
+shape = SubResource("BoxShape_floor")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-48, -28, 0)
+light_color = Color(0.55, 0.57, 0.8, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="DungeonLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 3.5, 1.5)
+light_color = Color(0.95, 0.46, 0.18, 1)
+light_energy = 5.0
+omni_range = 12.0
+
+[node name="TorchLeft" parent="." instance=ExtResource("3_torch")]
+position = Vector3(-5.5, 0, -2.5)
+
+[node name="TorchRight" parent="." instance=ExtResource("3_torch")]
+position = Vector3(5.5, 0, -2.5)
+
+[node name="TorchBack" parent="." instance=ExtResource("3_torch")]
+position = Vector3(0, 0, -5)
+
+[node name="PreviewPlayer" parent="." instance=ExtResource("2_player")]
+position = Vector3(0, 0, 0)
+
+[node name="Main" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="Main"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.015, 0.02, 0.04, 0.28)
+mouse_filter = 2
+
+[node name="Main" type="MarginContainer" parent="Main"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 110
+theme_override_constants/margin_right = 70
+theme_override_constants/margin_bottom = 30
+theme_override_colors/Button/font_color = Color(0.85, 0.87, 0.95, 1)
+theme_override_colors/Button/font_hover_color = Color(1, 0.88, 0.54, 1)
+theme_override_colors/Button/font_pressed_color = Color(1, 0.93, 0.73, 1)
+theme_override_styles/Button/normal = SubResource("StyleBox_button")
+theme_override_styles/Button/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/Button/pressed = SubResource("StyleBox_button_pressed")
+
+[node name="Content" type="VBoxContainer" parent="Main/Main"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Main/Main/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.91, 0.88, 0.8, 1)
+theme_override_font_sizes/font_size = 20
+text = "SELECT YOUR RUN"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Main/Main/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.58, 0.66, 0.78, 1)
+theme_override_font_sizes/font_size = 11
+text = "BUILD YOUR LOADOUT  /  ENTER THE DUNGEON"
+horizontal_alignment = 1
+
+[node name="ContentRow" type="HBoxContainer" parent="Main/Main/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="CharacterPanel" type="VBoxContainer" parent="Main/Main/Content/ContentRow"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="Main/Main/Content/ContentRow/CharacterPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.68, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "CHARACTER"
+
+[node name="KnightButton" type="Button" parent="Main/Main/Content/ContentRow/CharacterPanel"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "KNIGHT"
+
+[node name="RogueButton" type="Button" parent="Main/Main/Content/ContentRow/CharacterPanel"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "ROGUE"
+
+[node name="MageButton" type="Button" parent="Main/Main/Content/ContentRow/CharacterPanel"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "MAGE"
+
+[node name="SelectionLabel" type="Label" parent="Main/Main/Content/ContentRow/CharacterPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.38, 1)
+text = "PILIHAN: KNIGHT"
+
+[node name="Description" type="Label" parent="Main/Main/Content/ContentRow/CharacterPanel"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.73, 0.8, 1)
+autowrap_mode = 2
+
+[node name="Spacer" type="Control" parent="Main/Main/Content/ContentRow"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LevelPanel" type="VBoxContainer" parent="Main/Main/Content/ContentRow"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="Main/Main/Content/ContentRow/LevelPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.68, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "DUNGEON MAP"
+
+[node name="Level1Button" type="Button" parent="Main/Main/Content/ContentRow/LevelPanel"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "01  FORGOTTEN HALLS"
+
+[node name="Level2Button" type="Button" parent="Main/Main/Content/ContentRow/LevelPanel"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "02  CRYPT OF ECHOES"
+
+[node name="Level3Button" type="Button" parent="Main/Main/Content/ContentRow/LevelPanel"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "03  LICH THRONE"
+
+[node name="SelectionLabel" type="Label" parent="Main/Main/Content/ContentRow/LevelPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.38, 1)
+text = "RUANG TERPILIH: THE FORGOTTEN HALLS"
+
+[node name="Description" type="Label" parent="Main/Main/Content/ContentRow/LevelPanel"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.73, 0.8, 1)
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="Main/Main/Content"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.07, 0.04, 1)
+theme_override_font_sizes/font_size = 22
+text = "START RUN  •  ENTER DUNGEON"
+
+[node name="QuitButton" type="Button" parent="Main/Main/Content"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 0.58, 0.65, 1)
+text = "KELUAR"
+
+[node name="Brand" type="Label" parent="Main"]
+offset_left = 22.0
+offset_top = 22.0
+offset_right = 360.0
+offset_bottom = 49.0
+theme_override_colors/font_color = Color(0.94, 0.9, 0.82, 1)
+theme_override_font_sizes/font_size = 20
+text = "CLASH HERO"
+
+[node name="BrandSub" type="Label" parent="Main"]
+offset_left = 24.0
+offset_top = 49.0
+offset_right = 360.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.58, 0.66, 0.78, 1)
+theme_override_font_sizes/font_size = 10
+text = "DUNGEON INSTANCE"
+
+[node name="Season" type="Label" parent="Main"]
+offset_left = 790.0
+offset_top = 26.0
+offset_right = 1008.0
+offset_bottom = 39.0
+theme_override_colors/font_color = Color(0.78, 0.6, 0.34, 1)
+theme_override_font_sizes/font_size = 12
+text = "SEASON 01  /  THE AWAKENING"
+horizontal_alignment = 2
+
+[node name="Status" type="Label" parent="Main"]
+offset_left = 790.0
+offset_top = 49.0
+offset_right = 1008.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.55, 0.62, 0.72, 1)
+theme_override_font_sizes/font_size = 10
+text = "ONLINE  •  READY TO RUN"
+horizontal_alignment = 2
+
+[node name="HeroCaption" type="VBoxContainer" parent="Main"]
+offset_left = 434.0
+offset_top = 470.0
+offset_right = 718.0
+offset_bottom = 535.0
+theme_override_constants/separation = 2
+mouse_filter = 2
+
+[node name="Eyebrow" type="Label" parent="Main/HeroCaption"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.6, 0.34, 1)
+theme_override_font_sizes/font_size = 10
+text = "CURRENT HERO"
+horizontal_alignment = 1
+
+[node name="HeroName" type="Label" parent="Main/HeroCaption"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.9, 0.82, 1)
+theme_override_font_sizes/font_size = 24
+text = "KNIGHT"
+horizontal_alignment = 1
+
+[node name="HeroRole" type="Label" parent="Main/HeroCaption"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 0.66, 0.78, 1)
+theme_override_font_sizes/font_size = 11
+text = "FRONTLINE VANGUARD"
+horizontal_alignment = 1
+
+[node name="FooterHint" type="Label" parent="Main"]
+offset_left = 54.0
+offset_top = 602.0
+offset_right = 1098.0
+offset_bottom = 624.0
+theme_override_colors/font_color = Color(0.47, 0.53, 0.64, 1)
+theme_override_font_sizes/font_size = 11
+text = "SELECT YOUR HERO  •  CHOOSE YOUR DUNGEON  •  START YOUR RUN"
+horizontal_alignment = 1
+mouse_filter = 2

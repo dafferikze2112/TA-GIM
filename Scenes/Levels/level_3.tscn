@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Levels/level_1.tscn" id="1_base"]
+
+[node name="Level 3" instance=ExtResource("1_base")]
+level_title = "THRONE OF THE LICH"
+mission_description = "Kalahkan 24 penjaga di Throne of the Lich."
+monster_count = 24
+mage_ratio = 0.45
+spawn_radius = 25
+fog_color = Color(0.05, 0.16, 0.08, 1)
+map_tint = Color(0.55, 1, 0.62, 1)
